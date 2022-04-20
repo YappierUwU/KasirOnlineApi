@@ -1,0 +1,6 @@
+{
+    "webhook":{
+        "enabled":false,
+        "path":""
+    }
+}
