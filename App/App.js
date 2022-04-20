@@ -19,7 +19,7 @@ app.use(
 
 global.client = new Client({
     authStrategy: new LocalAuth(),
-    puppeteer: { headless: true },
+    puppeteer: { headless: true, args: ["--no-sandbox"] },
 });
 
 global.authed = false;
