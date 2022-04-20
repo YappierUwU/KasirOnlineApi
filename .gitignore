@@ -1,3 +1,6 @@
 .wwebjs_auth/
 node_modules
 .env
+yarn.lock
+package.json.lock
+last.qr
