@@ -7,42 +7,52 @@ const validate = require("../Validation/UserValidation");
 const handlerInput = require("../Util/ValidationHandler");
 // twlp
 // nama pemilik nama usaha lokasui usaha jenis usaha
-router.post("/register", validate(), handlerInput, async function (req, res) {
-  let sql = `INSERT INTO tbltoko (nama_toko, alamat_toko, nomer_toko, nama_pemilik, email_toko, password_toko, jenis_toko) VALUES ( $1, $2, $3, $4, $5, $6 , $7 ) returning idtoko`;
-  let data = [
-    "-",
-    "-",
-    "-",
-    "-",
-    req.body.email,
-    encrypt(req.body.password),
-    "-",
-  ];
-  const toko = await koneksi.oneOrNone(sql, data);
-  let token = generate(toko.idtoko, "2");
-  res.status(200).json({
-    status: true,
-    data: req.body,
-    token: token,
-  });
+router.post("/register", validate(), handlerInput, async function(req, res) {
+    let sql = `INSERT INTO tbltoko (nama_toko, alamat_toko, nomer_toko, nama_pemilik, email_toko, password_toko, jenis_toko) VALUES ( NULL, NULL, NULL, NULL, $5, $6 , NULL ) returning idtoko`;
+    let data = [
+        "-",
+        "-",
+        "-",
+        "-",
+        req.body.email,
+        encrypt(req.body.password),
+        "-",
+    ];
+    const toko = await koneksi.oneOrNone(sql, data);
+    let token = generate(toko.idtoko, "2");
+    res.status(200).json({
+        status: true,
+        data: {
+            email: req.body.email,
+        },
+        token: token,
+    });
 });
 
-router.post("/login", async function (req, res, next) {
-  let sql = `SELECT * FROM tbltoko where email_toko=$1 and password_toko=$2`;
-  let data = [req.body.email, encrypt(req.body.password)];
-  let result = await koneksi.any(sql, data);
-  if (result.length > 0) {
-    let token = generate(result[0].idtoko, "2");
-    res.json({
-      token: token,
-      data: {
-        email: result[0].email_toko,
-      },
-    });
-  } else {
-    res.status(404).json({ msg: "Email atau Password tidak ditemukan" });
-  }
-  //
+router.post("/login", async function(req, res, next) {
+    let sql = `SELECT * FROM tbltoko where email_toko=$1 and password_toko=$2`;
+    let data = [req.body.email, encrypt(req.body.password)];
+    let result = await koneksi.any(sql, data);
+    if (result.length > 0) {
+        let { nomer_toko, nama_toko } = result[0];
+        let page = "Dashboard";
+        if (!nomer_toko) {
+            page = "Verifikasi OTP";
+        } else if (nomer_toko && !nama_toko) {
+            page = "Ubah Data Toko";
+        }
+
+        let token = generate(result[0].idtoko, "2");
+        res.json({
+            token: token,
+            page: page,
+            data: {
+                email: result[0].email_toko,
+            },
+        });
+    } else {
+        res.status(404).json({ msg: "Email atau Password tidak ditemukan" });
+    }
 });
 
 module.exports = router;
