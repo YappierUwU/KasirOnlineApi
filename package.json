@@ -29,6 +29,7 @@
         "whatsapp-web.js": "^1.16.5"
     },
     "scripts": {
-        "start": "nodemon ./public/index.js"
+        "start": "node ./public/index.js",
+        "watch": "nodemon ./public/index.js"
     }
 }

@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const qrcode = require("qrcode-terminal");
 require("dotenv").config();
 const cmpression = require("compression");
 const config = require("../config.json");
@@ -18,7 +19,7 @@ app.use(
 );
 
 global.client = new Client({
-    authStrategy: new LocalAuth(),
+    authStrategy: new LocalAuth({ clientId: "apitoko" }),
     puppeteer: { headless: true, args: ["--no-sandbox"] },
 });
 
@@ -45,11 +46,6 @@ var corsOptions = {
 app.use(Cors());
 
 app.use(function(req, res, next) {
-    // Website you wish to allow to connect
-    // res.setHeader(
-    //   "Access-Control-Allow-Origin",
-    //   "https://webdokter.herokuapp.com"
-    // );
     const origin = req.headers.origin;
     if (whitelist.includes(origin)) {
         res.setHeader("Access-Control-Allow-Origin", origin);
@@ -90,9 +86,9 @@ app.get("/", (req, res) => {
 });
 
 //Otp Whatsapp
-
 client.on("qr", (qr) => {
-    console.log("qr");
+    console.log(qr);
+    qrcode.generate(qr, { small: true });
     fs.writeFileSync("./Component/last.qr", qr);
 });
 
@@ -114,23 +110,24 @@ client.on("ready", () => {
     console.log("Client is ready!");
 });
 
-client.on("message", async(msg) => {
-    if (config.webhook.enabled) {
-        if (msg.hasMedia) {
-            const attachmentData = await msg.downloadMedia();
-            msg.attachmentData = attachmentData;
-        }
-        axios.post(config.webhook.path, { msg });
-    }
+client.on("change_state", (state) => {
+    console.log("CHANGE STATE", state);
 });
+
 client.on("disconnected", () => {
     console.log("disconnected");
 });
-client.initialize();
 
+client.initialize();
 app.use(function(req, res, next) {
     console.log(req.method + " : " + req.path);
     next();
+});
+
+process.on("SIGINT", async() => {
+    console.log("(SIGINT) Shutting down...");
+    await client.destroy();
+    process.exit(0);
 });
 
 module.exports = app;
