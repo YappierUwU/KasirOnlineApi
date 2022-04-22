@@ -3,14 +3,15 @@ const app = express();
 const qrcode = require("qrcode-terminal");
 require("dotenv").config();
 const cmpression = require("compression");
-const config = require("../config.json");
 var path = require("path");
 app.use(cmpression());
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const { Client, LocalAuth } = require("whatsapp-web.js");
-const axios = require("axios");
-("express-validator");
+const Middleware = require("../Middleware/Middleware");
+const Route = require("../Routes/Routes");
+const Cors = require("cors");
+
 app.use(express.json());
 app.use(
     bodyParser.urlencoded({
@@ -24,24 +25,6 @@ global.client = new Client({
 });
 
 global.authed = false;
-const Middleware = require("../Middleware/Middleware");
-const Route = require("../Routes/Routes");
-const Cors = require("cors");
-//CORS
-var whitelist = [
-    "https://webdokter.herokuapp.com",
-    "http://localhost:3000",
-    "https://api-dokter.herokuapp.com",
-];
-var corsOptions = {
-    origin: function(origin, callback) {
-        if (whitelist.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
-};
 
 app.use(Cors());
 
@@ -50,28 +33,21 @@ app.use(function(req, res, next) {
     if (whitelist.includes(origin)) {
         res.setHeader("Access-Control-Allow-Origin", origin);
     }
-    // Request methods you wish to allow
     res.setHeader(
         "Access-Control-Allow-Methods",
-        "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+        "GET, POST, OPTIONS, PUT, DELETE"
     );
 
-    // Request headers you wish to allow
     res.setHeader(
         "Access-Control-Allow-Headers",
         "X-Requested-With,content-type"
     );
 
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
     res.setHeader("Access-Control-Allow-Credentials", true);
 
-    // Pass to next layer of middleware
     next();
 });
 
-//Make body readable
-app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 

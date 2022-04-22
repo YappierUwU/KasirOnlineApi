@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
-const validate = require("../Validation/DoctorValidation");
 
 router.get("/", async function(req, res, next) {
     const { cari = "" } = req.query;
