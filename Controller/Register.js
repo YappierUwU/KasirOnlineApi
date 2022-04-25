@@ -24,15 +24,17 @@ router.post("/minta", async function (req, res) {
   koneksi.none(sql, [req.body.nomer_toko, req.context.idtoko]);
   let otp =
     "insert into tblotp (idtoko,otp,created_at,status) values ($1,$2,$3,$4)";
-  let data = [req.body.nomer_toko, req.context.idtoko];
+  let timer =
+    "select created_at from tblotp where idtoko=$1 order by created_at desc";
   let token = generateToken();
   token = token.toString();
   const created_at = new Date();
   let isi = [req.context.idtoko, token, created_at, 0];
-  koneksi.none(otp, isi);
+  koneksi.none(otp, isi, timer, [req.body.created_at]);
   let message =
     "TERIMA KASIH TELAH MENDAFTAR DI APLIKASI KAMI , JANGAN BERIKAN KODE INI PADA SIAPAPUN " +
     token;
+
   // res.status(200).json({
   //     status: true,
   //     token: token,
@@ -81,6 +83,7 @@ router.post("/verifikasi", async function (req, res, next) {
 
 router.post("/profile", async function (req, res, next) {
   let sql = `UPDATE tbltoko set nama_toko=$1, alamat_toko=$2, nama_pemilik=$3, jenis_toko=$4 where idtoko=$5 `;
+  let sqlpegawai = `insert into tblpegawai (nama_pegawai,alamat_pegawai,no_pegawai,idtoko,pin) select nama_pemilik,alamat_toko,nomer_toko,$1,$2 from tbltoko where idtoko=$1`;
   let data = [
     req.body.nama_toko,
     req.body.alamat_toko,
@@ -88,7 +91,9 @@ router.post("/profile", async function (req, res, next) {
     req.body.jenis_toko,
     req.context.idtoko,
   ];
-  koneksi.none(sql, data);
+  koneksi.none(sql, data).then(() => {
+    koneksi.none(sqlpegawai, [req.context.idtoko, "1234"]);
+  });
   res.json({
     message: "data berhasil diubah",
   });
