@@ -15,10 +15,10 @@ function verify(req, res, next) {
             req.context = decoded;
             next();
         } else {
-            res.status(401).json({ status: false, message: "Token is not valid!" });
+            res.status(401).json({ status: false, message: "Token is tidak valid!" });
         }
     } catch (err) {
-        res.status(401).json({ status: false, message: "Token is not valid!" });
+        res.status(401).json({ status: false, message: "Token is tidak valid!" });
     }
 }
 
