@@ -128,6 +128,7 @@ router.post("/barang", handlerInput, async function(req, res, next) {
     } catch (error) {
         res.status(501).json({
             status: false,
+            message: error,
         });
     }
 
