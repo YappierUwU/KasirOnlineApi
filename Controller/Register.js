@@ -100,31 +100,38 @@ router.post("/profile", async function(req, res, next) {
     //
 });
 
+router.post("/barang", handlerInput, async function(req, res, next) {
+    try {
+        let satuan = await koneksi.oneOrNone(
+            "insert into tblsatuan (nama_satuan) values ($1) returning id_satuan", [req.body.nama_satuan]
+        );
+        let kategori = await koneksi.oneOrNone(
+            "insert into tblkategori (nama_kategori) values ($1) returning id_kategori", [req.body.nama_kategori]
+        );
 
-router.post("/barang", handlerInput, function(req, res, next) {
+        let sql = `INSERT INTO tblbarang (idbarang,idkategori,idsatuan,barang,harga,hargabeli, idtoko) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
+        let data = [
+            req.body.idbarang,
+            kategori,
+            satuan,
+            req.body.barang,
+            req.body.harga,
+            req.body.hargabeli,
+            req.body.idtoko,
+        ];
 
-    let satuan = await koneksi.oneOrNone("insert into tblsatuan (nama_satuan) values ($1) returning id_satuan", [req.body.nama_satuan]);
-    let kategori = await koneksi.oneOrNone("insert into tblkategori (nama_kategori) values ($1) returning id_kategori", [req.body.nama_kategori]);
-
-    let sql = `INSERT INTO tblbarang (idbarang,idkategori,idsatuan,barang,harga,hargabeli, idtoko) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
-    let data = [
-        req.body.idbarang,
-        kategori,
-        satuan,
-        req.body.barang,
-        req.body.harga,
-        req.body.hargabeli,
-        req.body.idtoko,
-    ];
-
-    koneksi.any(sql, data);
-    res.status(200).json({
-        status: true,
-        data: req.body,
-    });
+        koneksi.any(sql, data);
+        res.status(200).json({
+            status: true,
+            data: req.body,
+        });
+    } catch (error) {
+        res.status(501).json({
+            status: false,
+        });
+    }
 
     //
 });
-
 
 module.exports = router;
