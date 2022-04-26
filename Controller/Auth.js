@@ -31,12 +31,16 @@ router.post("/register", validate(), handlerInput, async function(req, res) {
 
 router.post("/login", async function(req, res, next) {
     let sql = `SELECT nomer_toko, nama_toko FROM tbltoko where email_toko=$1 and password_toko=$2`;
+    let sqlOTP = "select idotp from tblotp where idtoko=$1;";
+
     let data = [req.body.email, encrypt(req.body.password)];
     let result = await koneksi.any(sql, data);
+
     if (result.length > 0) {
+        let otp = await koneksi.any(sqlOTP, [result[0].idtoko]);
         let { nomer_toko, nama_toko } = result[0];
         let page = "Dashboard";
-        if (!nomer_toko) {
+        if (!nomer_toko && otp.length > 0) {
             page = "Verifikasi OTP";
         } else if (nomer_toko && !nama_toko) {
             page = "Ubah Data Toko";
