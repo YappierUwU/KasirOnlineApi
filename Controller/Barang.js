@@ -42,9 +42,14 @@ router.get("/:id", async function(req, res, next) {
 });
 
 router.post("/", handlerInput, function(req, res, next) {
-    console.log(req.body);
-    console.log(req.context);
-    let sql = `INSERT INTO tblbarang (idbarang,idkategori,idsatuan,barang,harga,hargabeli, idtoko) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
+    if (!req.body.flag_stok || req.body.flag_stok == "0") {
+        req.body.flag_stok = 0;
+        req.body.stok = 0;
+    } else {
+        req.body.flag_stok = 1;
+    }
+
+    let sql = `INSERT INTO tblbarang (idbarang,idkategori,idsatuan,barang,harga,hargabeli, idtoko,stok,flag_stok) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`;
     let data = [
         req.body.idbarang,
         req.body.idkategori,
@@ -53,6 +58,8 @@ router.post("/", handlerInput, function(req, res, next) {
         req.body.harga,
         req.body.hargabeli,
         req.body.idtoko,
+        req.body.stok,
+        req.body.flag_stok,
     ];
 
     koneksi.any(sql, data);
@@ -65,8 +72,6 @@ router.post("/", handlerInput, function(req, res, next) {
 });
 
 router.post("/:id", handlerInput, function(req, res) {
-    console.log(req.body);
-    console.log(req.context);
     let idbarang = req.params.id;
     let sql = `UPDATE tblbarang set idkategori=$1,idsatuan=$2,barang=$3,harga=$4,hargabeli=$5, idtoko=$6 where idbarang=$7`;
     let data = [

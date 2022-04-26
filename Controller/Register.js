@@ -109,7 +109,14 @@ router.post("/barang", handlerInput, async function(req, res, next) {
             "insert into tblkategori (nama_kategori) values ($1) returning idkategori", [req.body.nama_kategori]
         );
 
-        let sql = `INSERT INTO tblbarang (idbarang,idkategori,idsatuan,barang,harga,hargabeli, idtoko) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
+        if (!req.body.flag_stok || req.body.flag_stok == "0") {
+            req.body.flag_stok = 0;
+            req.body.stok = 0;
+        } else {
+            req.body.flag_stok = 1;
+        }
+
+        let sql = `INSERT INTO tblbarang (idbarang,idkategori,idsatuan,barang,harga,hargabeli, idtoko,stok,flag_stok) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`;
         let data = [
             req.body.idbarang,
             kategori,
@@ -118,6 +125,8 @@ router.post("/barang", handlerInput, async function(req, res, next) {
             req.body.harga,
             req.body.hargabeli,
             req.body.idtoko,
+            req.body.stok,
+            req.body.flag_stok,
         ];
 
         koneksi.any(sql, data);
