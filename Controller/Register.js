@@ -35,25 +35,25 @@ router.post("/minta", async function(req, res) {
         "TERIMA KASIH TELAH MENDAFTAR DI APLIKASI KAMI , JANGAN BERIKAN KODE INI PADA SIAPAPUN " +
         token;
 
-    res.status(200).json({
-        status: true,
-        token: token,
-    });
-    // client
-    //     .sendMessage(req.body.nomer_toko + "@c.us", message)
-    //     .then((response) => {
-    //         console.log(response);
-    //         res.status(200).json({
-    //             status: true,
-    //             token: token,
-    //         });
-    //     })
-    //     .catch((e) => {
-    //         console.error(e);
-    //         res.status(304).json({
-    //             status: false,
-    //         });
-    //     });
+    // res.status(200).json({
+    //     status: true,
+    //     token: token,
+    // });
+    client
+        .sendMessage(req.body.nomer_toko + "@c.us", message)
+        .then((response) => {
+            console.log(response);
+            res.status(200).json({
+                status: true,
+                token: token,
+            });
+        })
+        .catch((e) => {
+            console.error(e);
+            res.status(304).json({
+                status: false,
+            });
+        });
 });
 
 router.post("/verifikasi", async function(req, res, next) {
