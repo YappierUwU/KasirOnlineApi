@@ -103,10 +103,10 @@ router.post("/profile", async function(req, res, next) {
 router.post("/barang", handlerInput, async function(req, res, next) {
     try {
         let satuan = await koneksi.oneOrNone(
-            "insert into tblsatuan (nama_satuan) values ($1) returning idsatuan", [req.body.nama_satuan]
+            "insert into tblsatuan (nama_satuan,idtoko) values ($1,$2) returning idsatuan", [req.body.nama_satuan, req.context.idtoko]
         );
         let kategori = await koneksi.oneOrNone(
-            "insert into tblkategori (nama_kategori) values ($1) returning idkategori", [req.body.nama_kategori]
+            "insert into tblkategori (nama_kategori,idtoko) values ($1,$2) returning idkategori", [req.body.nama_kategori, req.context.idtoko]
         );
 
         if (!req.body.flag_stok || req.body.flag_stok == "0") {
@@ -124,7 +124,7 @@ router.post("/barang", handlerInput, async function(req, res, next) {
             req.body.barang,
             req.body.harga,
             req.body.hargabeli,
-            req.body.idtoko,
+            req.context.idtoko,
             req.body.stok,
             req.body.flag_stok,
         ];

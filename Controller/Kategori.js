@@ -42,7 +42,7 @@ router.post("/", handlerInput, function(req, res, next) {
     console.log(req.body);
     console.log(req.context);
     let sql = `INSERT INTO tblkategori (nama_kategori, idtoko) VALUES ($1,$2)`;
-    let data = [req.body.nama_kategori, req.body.idtoko];
+    let data = [req.body.nama_kategori, req.context.idtoko];
 
     koneksi.any(sql, data);
     res.status(200).json({
@@ -58,7 +58,7 @@ router.post("/:id", handlerInput, function(req, res) {
     console.log(req.context);
     let idkategori = req.params.id;
     let sql = `UPDATE tblkategori SET nama_kategori=$1, idtoko=$2 WHERE idkategori=$3 `;
-    let data = [req.body.nama_kategori, req.body.idtoko, idkategori];
+    let data = [req.body.nama_kategori, req.context.idtoko, idkategori];
     koneksi.oneOrNone(sql, data).catch((e) => {
         console.log(e);
     });

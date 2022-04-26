@@ -57,7 +57,7 @@ router.post("/", handlerInput, function(req, res, next) {
         req.body.barang,
         req.body.harga,
         req.body.hargabeli,
-        req.body.idtoko,
+        req.context.idtoko,
         req.body.stok,
         req.body.flag_stok,
     ];
@@ -80,7 +80,7 @@ router.post("/:id", handlerInput, function(req, res) {
         req.body.barang,
         req.body.harga,
         req.body.hargabeli,
-        req.body.idtoko,
+        req.context.idtoko,
         idbarang,
     ];
     koneksi.oneOrNone(sql, data).catch((e) => {

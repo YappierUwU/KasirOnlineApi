@@ -50,7 +50,7 @@ router.post("/", handlerInput, function(req, res, next) {
         req.body.nama_pelanggan,
         req.body.alamat_pelanggan,
         req.body.no_telepon,
-        req.body.idtoko,
+        req.context.idtoko,
     ];
 
     koneksi.any(sql, data);
@@ -71,7 +71,7 @@ router.post("/:id", handlerInput, function(req, res) {
         req.body.nama_pelanggan,
         req.body.alamat_pelanggan,
         req.body.no_telepon,
-        req.body.idtoko,
+        req.context.idtoko,
         idpelanggan,
     ];
     koneksi.oneOrNone(sql, data).catch((e) => {
