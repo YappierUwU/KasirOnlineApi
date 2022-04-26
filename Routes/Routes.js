@@ -5,6 +5,7 @@ const Pelanggan = require("../Controller/Pelanggan");
 const Kategori = require("../Controller/Kategori");
 const Barang = require("../Controller/Barang");
 const Pegawai = require("../Controller/Pegawai");
+const Order = require("../Controller/Order");
 const chatRoute = require("../Component/chatting");
 const authRoute = require("../Component/auth");
 
@@ -16,6 +17,7 @@ function Route(app) {
   app.use("/kategori", Kategori);
   app.use("/barang", Barang);
   app.use("/pegawai", Pegawai);
+  app.use("/order", Order);
   app.use("/wa/chat", chatRoute);
   app.use("/wa/auth", authRoute);
 
