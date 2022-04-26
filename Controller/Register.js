@@ -103,10 +103,10 @@ router.post("/profile", async function(req, res, next) {
 router.post("/barang", handlerInput, async function(req, res, next) {
     try {
         let satuan = await koneksi.oneOrNone(
-            "insert into tblsatuan (nama_satuan) values ($1) returning id_satuan", [req.body.nama_satuan]
+            "insert into tblsatuan (nama_satuan) values ($1) returning idsatuan", [req.body.nama_satuan]
         );
         let kategori = await koneksi.oneOrNone(
-            "insert into tblkategori (nama_kategori) values ($1) returning id_kategori", [req.body.nama_kategori]
+            "insert into tblkategori (nama_kategori) values ($1) returning idkategori", [req.body.nama_kategori]
         );
 
         let sql = `INSERT INTO tblbarang (idbarang,idkategori,idsatuan,barang,harga,hargabeli, idtoko) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
