@@ -30,7 +30,7 @@ router.post("/register", validate(), handlerInput, async function(req, res) {
 });
 
 router.post("/login", async function(req, res, next) {
-    let sql = `SELECT nomer_toko, nama_toko FROM tbltoko where email_toko=$1 and password_toko=$2`;
+    let sql = `SELECT nomer_toko, nama_toko,idtoko,email_toko FROM tbltoko where email_toko=$1 and password_toko=$2`;
     let sqlOTP = "select idotp from tblotp where idtoko=$1;";
 
     let data = [req.body.email, encrypt(req.body.password)];
