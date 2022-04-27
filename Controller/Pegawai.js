@@ -53,7 +53,7 @@ router.post("/", handlerInput, function (req, res, next) {
     req.body.alamat_pegawai,
     req.body.no_pegawai,
     req.body.pin,
-    req.body.idtoko,
+    req.context.idtoko,
   ];
 
   koneksi.any(sql, data);
