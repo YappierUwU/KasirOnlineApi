@@ -3,6 +3,27 @@ var router = express.Router();
 var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
 
+router.get("/", async function (req, res, next) {
+  const { timestamp = false } = req.query;
+  let sql;
+  if (timestamp) {
+    sql =
+      "select * from tbldetailjual where created_at > $1 or updated_at > $1";
+  }
+  let result = await koneksi.query(sql, [timestamp]);
+  if (result.length > 0) {
+    res.status(200).json({
+      status: true,
+      data: result,
+    });
+  } else {
+    res.status(200).json({
+      status: true,
+      data: [],
+    });
+  }
+});
+
 router.post("/", handlerInput, async function (req, res, next) {
   console.log(req.body);
   console.log(req.context);
@@ -25,7 +46,7 @@ router.post("/", handlerInput, async function (req, res, next) {
     })
     .catch((e) => {
       console.log(e);
-      res.status(304).json({
+      res.status(400).json({
         status: false,
       });
     });
@@ -45,7 +66,7 @@ router.delete(
       status: true,
       data: "data telah dihapus",
     });
-    return res.status(304).json({
+    return res.status(400).json({
       status: false,
       data: [],
     });

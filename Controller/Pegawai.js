@@ -4,11 +4,15 @@ var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
 
 router.get("/", async function (req, res, next) {
-  const { cari = "" } = req.query;
-  let result = await koneksi.query(
-    "select * from tblpegawai where nama_pegawai ILIKE '%" + cari + "%'",
-    [cari]
-  );
+  const { cari = "", timestamp = false } = req.query;
+  let sql;
+  if (timestamp) {
+    sql = "select * from tblpegawai where created_at > $1 or updated_at > $1";
+  } else {
+    sql =
+      "select * from view_pegawai where nama_pegawai ILIKE '%" + cari + "%'";
+  }
+  let result = await koneksi.query(sql, [timestamp]);
   if (result.length > 0) {
     res.status(200).json({
       status: true,
@@ -36,7 +40,7 @@ router.get("/:id", async function (req, res, next) {
       data: result[0],
     });
   } else {
-    res.status(304).json({
+    res.status(400).json({
       status: false,
       data: [],
     });
@@ -77,7 +81,7 @@ router.delete(
       status: true,
       data: "data telah dihapus",
     });
-    return res.status(304).json({
+    return res.status(400).json({
       status: false,
       data: [],
     });
