@@ -38,9 +38,10 @@ router.post("/login", async function(req, res, next) {
 
     if (result.length > 0) {
         let otp = await koneksi.any(sqlOTP, [result[0].idtoko]);
+        console.log(otp);
         let { nomer_toko, nama_toko } = result[0];
         let page = "Dashboard";
-        if (!nomer_toko && otp.length > 0) {
+        if (!nomer_toko || otp.length > 0) {
             page = "Verifikasi OTP";
         } else if (nomer_toko && !nama_toko) {
             page = "Ubah Data Toko";
