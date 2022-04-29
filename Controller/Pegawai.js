@@ -4,12 +4,19 @@ var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
 
 router.get("/", async function(req, res, next) {
-    const { cari = "" } = req.query;
-    let result = await koneksi.query(
-        "select * from tblpegawai where nama_pegawai ILIKE '%" +
-        cari +
-        "%' and idtoko=$2", [cari, req.context.idtoko]
-    );
+    const { cari = "", timestamp } = req.query;
+    let sql;
+
+    if (timestamp) {
+        sql =
+            "select * from tblpegawai where idtoko=$1 and (created_at > $2 or updated_at > $2) ";
+    } else {
+        sql =
+            "select * from tblpegawai where nama_pegawai ILIKE '%" +
+            cari +
+            "%' and idtoko=$1";
+    }
+    let result = await koneksi.query(sql, [req.context.idtoko, timestamp]);
     if (result.length > 0) {
         res.status(200).json({
             status: true,
@@ -42,7 +49,6 @@ router.get("/:id", async function(req, res, next) {
             message: "Data tidak ditemukan",
         });
     }
-    //
 });
 
 router.post("/", handlerInput, function(req, res, next) {

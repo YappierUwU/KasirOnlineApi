@@ -3,9 +3,18 @@ var router = express.Router();
 var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
 router.get("/", async function(req, res, next) {
-    let result = await koneksi.query("select * from tblsatuan where idtoko=$1", [
-        req.context.idtoko,
-    ]);
+    const { timestamp = false } = req.query;
+    let result = [];
+    if (timestamp) {
+        result = await koneksi.query(
+            "select * from tblsatuan where (created_at > $2 or updated_at > $2) and idtoko=$1", [req.context.idtoko, timestamp]
+        );
+    } else {
+        result = await koneksi.query("select * from tblsatuan where idtoko=$1", [
+            req.context.idtoko,
+        ]);
+    }
+
     if (result.length > 0) {
         res.status(200).json({
             status: true,

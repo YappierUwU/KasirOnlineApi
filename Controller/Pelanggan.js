@@ -4,12 +4,19 @@ var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
 
 router.get("/", async function(req, res, next) {
-    const { cari = "" } = req.query;
-    let result = await koneksi.query(
-        "select * from tblpelanggan where nama_pelanggan ILIKE '%" +
-        cari +
-        "%' and idtoko=$2", [cari, req.context.idtoko]
-    );
+    const { cari = "", timestamp } = req.query;
+    let sql;
+
+    if (timestamp) {
+        sql =
+            "select * from tblpelanggan where (created_at > $1 or updated_at > $1) and idtoko=$2";
+    } else {
+        sql =
+            "select * from tblpelanggan where nama_pelanggan ILIKE '%" +
+            cari +
+            "%' and idtoko=$2";
+    }
+    let result = await koneksi.query(sql, [timestamp, req.context.idtoko]);
     if (result.length > 0) {
         res.status(200).json({
             status: true,

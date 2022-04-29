@@ -3,9 +3,18 @@ var router = express.Router();
 var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
 router.get("/", async function(req, res, next) {
-    let result = await koneksi.query(
-        "select * from tblkategori where idtoko=$1", [req.context.idtoko]
-    );
+    const { timestamp = false } = req.query;
+    let sql,
+        result = [];
+    if (timestamp) {
+        sql =
+            "select * from tblkategori where idtoko=$1 and (created_at > $2 or updated_at > $2)";
+        result = await koneksi.query(sql, [req.context.idtoko, timestamp]);
+    } else {
+        sql = "select * from tblkategori where idtoko=$1";
+        result = await koneksi.query(sql, [req.context.idtoko]);
+    }
+
     if (result.length > 0) {
         res.status(200).json({
             status: true,
@@ -32,7 +41,7 @@ router.get("/:id", async function(req, res, next) {
             data: result,
         });
     } else {
-        res.status(304).json({
+        res.status(400).json({
             status: false,
             data: {},
             message: "Data tidak ditemukan",
@@ -54,7 +63,7 @@ router.post("/", handlerInput, function(req, res, next) {
             });
         })
         .catch((err) => {
-            res.status(500).json({
+            res.status(400).json({
                 status: false,
                 data: {},
                 message: err.message,
@@ -75,7 +84,7 @@ router.post("/:id", handlerInput, function(req, res) {
             });
         })
         .catch((e) => {
-            res.status(500).json({
+            res.status(400).json({
                 status: false,
                 data: {},
                 message: e.message,
@@ -97,7 +106,7 @@ router.delete("/:id", async function(req, res, next) {
             });
         })
         .catch((err) => {
-            res.status(500).json({
+            res.status(400).json({
                 status: false,
                 data: {},
                 message: err.message,

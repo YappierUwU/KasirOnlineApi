@@ -5,12 +5,18 @@ var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
 
 router.get("/", async function(req, res, next) {
-    const { cari = "" } = req.query;
-    let result = await koneksi.query(
-        "select * from view_barang where barang ILIKE '%" +
-        cari +
-        "%' and idtoko=$2", [cari, req.context.idtoko]
-    );
+    const { cari = "", timestamp = false } = req.query;
+    let sql;
+    if (timestamp) {
+        sql =
+            "select * from tblbarang where (created_at > $1 or updated_at > $1) and idtoko=$2";
+    } else {
+        sql =
+            "select * from view_barang where barang ILIKE '%" +
+            cari +
+            "%' and idtoko=$2";
+    }
+    let result = await koneksi.query(sql, [timestamp, req.context.idtoko]);
     if (result.length > 0) {
         res.status(200).json({
             status: true,
@@ -37,13 +43,12 @@ router.get("/:id", async function(req, res, next) {
             data: result,
         });
     } else {
-        res.status(304).json({
+        res.status(400).json({
             status: false,
             data: {},
             message: "Data tidak ditemukan",
         });
     }
-    //
 });
 
 router.post("/", handlerInput, function(req, res, next) {
@@ -76,7 +81,7 @@ router.post("/", handlerInput, function(req, res, next) {
             });
         })
         .catch((e) => {
-            res.status(304).json({
+            res.status(400).json({
                 status: false,
                 data: {},
                 message: e.message,
@@ -105,7 +110,7 @@ router.post("/:id", handlerInput, function(req, res) {
             });
         })
         .catch((e) => {
-            res.status(304).json({
+            res.status(400).json({
                 status: false,
                 data: {},
                 message: e.message,
@@ -113,29 +118,25 @@ router.post("/:id", handlerInput, function(req, res) {
         });
 });
 
-router.delete(
-    "/:id",
-    async function(req, res, next) {
-        let id = req.params.id;
-        let sql = `DELETE FROM tblbarang WHERE idbarang=$1 and and idtoko=$2 returning *`;
-        let data = [id, req.context.idtoko];
+router.delete("/:id", async function(req, res, next) {
+    let id = req.params.id;
+    let sql = `DELETE FROM tblbarang WHERE idbarang=$1 and and idtoko=$2 returning *`;
+    let data = [id, req.context.idtoko];
 
-        koneksi
-            .oneOrNone(sql, data)
-            .then((result) => {
-                res.status(200).json({
-                    status: true,
-                    data: result,
-                });
-            })
-            .catch((e) => {
-                res.status(304).json({
-                    status: false,
-                    data: {},
-                    message: e.message,
-                });
+    koneksi
+        .oneOrNone(sql, data)
+        .then((result) => {
+            res.status(200).json({
+                status: true,
+                data: result,
             });
-    }
-    //
-);
+        })
+        .catch((e) => {
+            res.status(400).json({
+                status: false,
+                data: {},
+                message: e.message,
+            });
+        });
+});
 module.exports = router;
