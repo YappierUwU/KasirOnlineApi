@@ -3,7 +3,7 @@ var router = express.Router();
 var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
 router.get("/", async function(req, res, next) {
-    let result = await koneksi.query("select * from tblkategori");
+    let result = await koneksi.query("select * from tblkategori ");
     if (result.length > 0) {
         res.status(200).json({
             status: true,
