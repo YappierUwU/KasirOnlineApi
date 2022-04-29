@@ -31,8 +31,8 @@ router.get("/t", async function (req, res, next) {
       data: result,
     });
   } else {
-    res.status(200).json({
-      status: true,
+    res.status(400).json({
+      status: false,
       data: [],
     });
   }

@@ -89,7 +89,7 @@ router.post("/", function (req, res, next) {
       req.body.idpelanggan,
       req.body.idpegawai,
       req.context.idtoko,
-      req.body.tanggal,
+      req.body.tanggal_jual,
     ])
     .then(async (data) => {
       const idjual = data.idjual;
