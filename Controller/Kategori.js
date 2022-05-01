@@ -8,10 +8,10 @@ router.get("/", async function(req, res, next) {
         result = [];
     if (timestamp) {
         sql =
-            "select * from tblkategori where idtoko=$1 and (created_at > $2 or updated_at > $2)";
+            "select * from tblkategori where idtoko=$1 and (created_at > $2 or updated_at > $2) order by nama_kategori";
         result = await koneksi.query(sql, [req.context.idtoko, timestamp]);
     } else {
-        sql = "select * from tblkategori where idtoko=$1";
+        sql = "select * from tblkategori where idtoko=$1 order by nama_kategori";
         result = await koneksi.query(sql, [req.context.idtoko]);
     }
 
