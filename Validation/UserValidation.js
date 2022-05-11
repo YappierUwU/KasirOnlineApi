@@ -6,7 +6,7 @@ function validate() {
     body("email").isEmail().custom(checkEmail),
     body("password")
       .isLength({ min: 8 })
-      .withMessage("Password Minimal must be 8 letter"),
+      .withMessage("Password Minimal 8 huruf"),
   ];
 }
 

@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
+const validate = require("../Validation/OrderValidation");
 
 router.get("/", async function (req, res, next) {
   const { timestamp = false } = req.query;
@@ -73,7 +74,7 @@ router.get("/faktur", async function (req, res, next) {
   });
 });
 
-router.post("/", function (req, res, next) {
+router.post("/", validate(), function (req, res, next) {
   if (req.body.idpelanggan.toString() == "0") {
     req.body.idpelanggan = null;
     console.log(null);

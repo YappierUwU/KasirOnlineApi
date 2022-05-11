@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
+const validate = require("../Validation/DetailValidation");
 
 router.get("/", async function (req, res, next) {
   const { timestamp = false } = req.query;
@@ -24,7 +25,7 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-router.post("/", handlerInput, async function (req, res, next) {
+router.post("/", validate(), handlerInput, async function (req, res, next) {
   console.log(req.body);
   console.log(req.context);
   let sql = `INSERT INTO tbldetailjual (idjual,idbarang,jumlahjual,hargajual,idtoko) VALUES ($1,$2,$3,$4,$5) `;
