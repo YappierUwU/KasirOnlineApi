@@ -73,7 +73,7 @@ router.post("/", validate(), handlerInput, function (req, res, next) {
     });
 });
 
-router.post("/:id", handlerInput, function (req, res) {
+router.post("/:id", validate(), handlerInput, function (req, res) {
   let idkategori = req.params.id;
   let sql = `UPDATE tblkategori SET nama_kategori=$1, idtoko=$2 WHERE idkategori=$3 returning *`;
   let data = [req.body.nama_kategori, req.context.idtoko, idkategori];

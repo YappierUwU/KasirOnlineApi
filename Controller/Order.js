@@ -74,7 +74,7 @@ router.get("/faktur", async function (req, res, next) {
   });
 });
 
-router.post("/", validate(), function (req, res, next) {
+router.post("/", validate(), handlerInput, function (req, res, next) {
   if (req.body.idpelanggan.toString() == "0") {
     req.body.idpelanggan = null;
     console.log(null);

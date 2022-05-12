@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
+const validate = require("../Validation/PegawaiValidation");
 
 router.get("/", async function (req, res, next) {
   const { cari = "", timestamp } = req.query;
@@ -52,7 +53,7 @@ router.get("/:id", async function (req, res, next) {
   }
 });
 
-router.post("/", handlerInput, function (req, res, next) {
+router.post("/", validate(), handlerInput, function (req, res, next) {
   let sql = `INSERT INTO tblpegawai (nama_pegawai, alamat_pegawai,no_pegawai,pin, idtoko) VALUES ($1,$2,$3,$4,$5) returning *`;
   let data = [
     req.body.nama_pegawai,
@@ -118,7 +119,7 @@ router.post("/login", async function (req, res, next) {
   }
 });
 
-router.post("/:id", handlerInput, function (req, res) {
+router.post("/:id", validate(), handlerInput, function (req, res) {
   let idpegawai = req.params.id;
   let sql = `UPDATE tblpegawai SET nama_pegawai=$1,alamat_pegawai=$2,no_pegawai=$3,pin=$4,idtoko=$5 WHERE idpegawai=$6 returning *`;
   let data = [

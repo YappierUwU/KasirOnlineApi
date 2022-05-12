@@ -7,7 +7,7 @@ const vuri = require("valid-url");
 const fs = require("fs");
 const { generate } = require("../Util/JWT");
 const { encrypt } = require("../Util/Encrypt");
-const validate = require("../Validation/UserValidation");
+const validate = require("../Validation/ProfileValidation");
 const handlerInput = require("../Util/ValidationHandler");
 
 function generateToken() {
@@ -81,7 +81,7 @@ router.post("/verifikasi", async function (req, res, next) {
     });
 });
 
-router.post("/profile", async function (req, res, next) {
+router.post("/profile", validate(), async function (req, res, next) {
   let sql = `UPDATE tbltoko set nama_toko=$1, alamat_toko=$2, nama_pemilik=$3, jenis_toko=$4 where idtoko=$5 `;
   let sqlpegawai = `insert into tblpegawai (nama_pegawai,alamat_pegawai,no_pegawai,idtoko,pin) select nama_pemilik,alamat_toko,nomer_toko,$1,$2 from tbltoko where idtoko=$1`;
   let data = [
