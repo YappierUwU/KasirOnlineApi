@@ -122,7 +122,7 @@ router.post("/:id", validate(), handlerInput, function (req, res) {
 
 router.delete("/:id", async function (req, res, next) {
   let id = req.params.id;
-  let sql = `DELETE FROM tblbarang WHERE idbarang=$1 and and idtoko=$2 returning *`;
+  let sql = `DELETE FROM tblbarang WHERE idbarang=$1 and idtoko=$2 returning *`;
   let data = [id, req.context.idtoko];
 
   koneksi
