@@ -4,6 +4,7 @@ var router = express.Router();
 var koneksi = require("../Util/Database");
 const handlerInput = require("../Util/ValidationHandler");
 const validate = require("../Validation/BarangValidation");
+const updateValidate = require("../Validation/UpdateBarangValidation");
 
 router.get("/", async function (req, res, next) {
   const { cari = "", timestamp = false } = req.query;
@@ -91,7 +92,7 @@ router.post("/", validate(), handlerInput, function (req, res, next) {
     });
 });
 
-router.post("/:id", validate(), handlerInput, function (req, res) {
+router.post("/:id", updateValidate(), handlerInput, function (req, res) {
   let idbarang = req.params.id;
   let sql = `UPDATE tblbarang set idkategori=$1,idsatuan=$2,barang=$3,harga=$4,hargabeli=$5, idtoko=$6 where idbarang=$7 returning *`;
   let data = [
