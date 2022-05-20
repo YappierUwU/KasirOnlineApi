@@ -12,8 +12,8 @@ function validate() {
     body("no_pegawai")
       .isLength({ min: 1 })
       .withMessage("no pegawai tidak boleh kosong ")
-      .isNumeric()
-      .withMessage("no pegawai harus berisi angka"),
+      .isMobilePhone()
+      .withMessage("harap isi nomor telepon dengan benar"),
     body("pin")
       .isLength({ min: 1 })
       .withMessage("pin tidak boleh kosong ")

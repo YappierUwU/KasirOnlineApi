@@ -12,8 +12,8 @@ function validate() {
     body("no_telepon")
       .isLength({ min: 1 })
       .withMessage("no telepon tidak boleh kosong ")
-      .isNumeric()
-      .withMessage("no telepon harus berisi angka"),
+      .isMobilePhone()
+      .withMessage("harap isi nomor telepon dengan benar"),
   ];
 }
 
