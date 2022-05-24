@@ -6,12 +6,17 @@ const validate = require("../Validation/DetailValidation");
 
 router.get("/", async function (req, res, next) {
   const { timestamp = false } = req.query;
-  let sql;
+  let sql,
+    result = [];
   if (timestamp) {
     sql =
       "select * from tbldetailjual where created_at > $1 or updated_at > $1";
+    result = await koneksi.query(sql, [timestamp]);
+  } else {
+    sql = "select * from tbldetailjual where idtoko=$1 ";
+    result = await koneksi.query(sql, [req.context.idtoko]);
   }
-  let result = await koneksi.query(sql, [timestamp]);
+
   if (result.length > 0) {
     res.status(200).json({
       status: true,
