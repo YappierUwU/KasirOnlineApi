@@ -35,8 +35,8 @@ router.get("/", async function (req, res, next) {
 router.get("/:id", async function (req, res, next) {
   let id = req.params.id;
   let result = await koneksi.oneOrNone(
-    "select * from tblpegawai where idpegawai = $1",
-    [id]
+    "select * from tblpegawai where idpegawai = $1 and idtoko=$2",
+    [id, req.context.idtoko]
   );
 
   if (result) {
