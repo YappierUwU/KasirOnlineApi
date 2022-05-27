@@ -63,10 +63,11 @@ router.post("/v2", handlerInput, async function (req, res, next) {
 
 router.get("/faktur", async function (req, res, next) {
   let id = `select idjual from tbljual where idtoko=$1 order by idjual desc limit 1`;
-  let { idjual } = await koneksi.oneOrNone(id, [req.context.idtoko]);
-  console.log(idjual);
-  if (!idjual) {
+  let data = await koneksi.oneOrNone(id, [req.context.idtoko]);
+  if (!data) {
     idjual = 0;
+  } else {
+    idjual = data.idjual;
   }
   idjual++;
   let format = "00000000";
