@@ -78,15 +78,25 @@ router.get("/faktur", async function (req, res, next) {
   });
 });
 
-router.post("/", validate(), handlerInput, function (req, res, next) {
+router.post("/", validate(), handlerInput, async function (req, res, next) {
   if (req.body.idpelanggan.toString() == "0") {
     req.body.idpelanggan = null;
     console.log(null);
   }
+  let id = `select idjual from tbljual where idtoko=$1 order by idjual desc limit 1`;
+  let { idjual } = await koneksi.oneOrNone(id, [req.context.idtoko]);
+  console.log(idjual);
+  if (!idjual) {
+    idjual = 0;
+  }
+  idjual++;
+  let format = "00000000";
+  let faktur =
+    format.substring(0, 8 - idjual.toString().length) + idjual.toString();
   let datajual = `insert into tbljual (fakturjual,bayar,total,kembali,potongan,idpelanggan,idpegawai,idtoko,tanggal_jual) values ($1,$2,$3,$4,$5,$6,$7,$8,$9) returning *`;
   koneksi
     .oneOrNone(datajual, [
-      req.body.fakturjual,
+      faktur,
       req.body.bayar,
       req.body.total,
       req.body.kembali,
