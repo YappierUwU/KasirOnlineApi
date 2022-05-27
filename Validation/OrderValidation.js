@@ -3,9 +3,6 @@ const db = require("../Util/Database");
 
 function validate() {
   return [
-    body("fakturjual")
-      .isLength({ min: 1 })
-      .withMessage("fakturjual tidak boleh kosong"),
     body("bayar")
       .isLength({ min: 1 })
       .withMessage("bayar tidak boleh kosong")
