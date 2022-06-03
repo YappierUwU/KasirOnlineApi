@@ -79,6 +79,21 @@ router.get("/faktur", async function(req, res, next) {
     });
 });
 
+router.get("/detail/:id", async function(req, res, next) {
+    let sql = `select * from view_detailjual where idjual=$1`;
+    let data = await koneksi.query(sql, [req.params.id]);
+    if (data) {
+        res.status(200).json({
+            status: true,
+            data,
+        });
+    } else {
+        res.status(400).json({
+            status: false,
+        });
+    }
+});
+
 router.post("/", validate(), handlerInput, async function(req, res, next) {
     if (req.body.idpelanggan.toString() == "0") {
         req.body.idpelanggan = null;
@@ -139,7 +154,12 @@ router.post("/", validate(), handlerInput, async function(req, res, next) {
                 });
                 return;
             }
-            data.detail = detail;
+
+            const dataSaved = await koneksi.query(
+                "select * from view_detailjual where idjual=$1", [idjual]
+            );
+
+            data.detail = dataSaved;
             return res.status(200).json({
                 status: true,
                 message: "sukses",
