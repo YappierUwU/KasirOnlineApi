@@ -11,6 +11,7 @@ router.get("/laba", async function(req, res, next) {
         sampai = sampai + " 23:59";
         sqlFilterTanggal = "and tanggal_jual between $2 and $3";
     }
+    sqlFilterTanggal = sqlFilterTanggal + " and idtoko = " + req.context.idtoko;
     sql =
         "select fakturjual,nama_pelanggan,nama_pegawai,tanggal_jual,barang,jumlahjual,nama_satuan,hargabeli,hargajual,idtoko,hargajual-hargabeli as laba from view_detailjual where (nama_pelanggan ILIKE '%" +
         cari +
@@ -42,6 +43,7 @@ router.get("/pendapatan", async function(req, res, next) {
         sampai = sampai + " 23:59";
         sqlFilterTanggal = "and tanggal_jual between $2 and $3";
     }
+    sqlFilterTanggal = sqlFilterTanggal + " and idtoko = " + req.context.idtoko;
     sql =
         "select fakturjual,nama_pelanggan,nama_pegawai,tanggal_jual,total,bayar,kembali,potongan from view_jual where (nama_pelanggan ILIKE '%" +
         cari +
@@ -72,15 +74,15 @@ router.get("/barang", async function(req, res, next) {
         sampai = sampai + " 23:59";
         sqlFilterTanggal = "and tanggal_jual between $2 and $3";
     }
-
+    sqlFilterTanggal = sqlFilterTanggal + " and idtoko = " + req.context.idtoko;
     sql =
-        "select idbarang,barang,nama_satuan,tanggal_jual,nama_kategori,SUM(jumlahjual) as total_jual , SUM(hargajual) as total_pendapatan , hargajual - hargabeli as total_keuntungan  from view_detailjual where (barang ILIKE '%" +
+        "select idbarang,barang,nama_satuan,nama_kategori,SUM(jumlahjual) as total_jual , SUM(hargajual) as total_pendapatan   from view_detailjual where (barang ILIKE '%" +
         cari +
         "%' or idbarang ILIKE '%" +
         cari +
         "%')" +
         sqlFilterTanggal +
-        " group by idbarang,barang,nama_satuan,tanggal_jual,nama_kategori,jumlahjual,hargabeli,hargajual ";
+        " group by idbarang,barang,nama_satuan,nama_kategori ";
 
     let result = await koneksi.query(sql, [cari, mulai, sampai]);
     console.log(result);
@@ -104,12 +106,13 @@ router.get("/kategori", async function(req, res, next) {
         sampai = sampai + " 23:59";
         sqlFilterTanggal = "and tanggaL_jual between $2 and $3";
     }
+    sqlFilterTanggal = sqlFilterTanggal + " and idtoko = " + req.context.idtoko;
     sql =
-        "select idkategori,tanggal_jual,nama_kategori,SUM(jumlahjual) as total_jual,SUM(hargajual) as total_pendapatan  from view_detailjual where (nama_kategori ILIKE '%" +
+        "select idkategori,nama_kategori,SUM(jumlahjual) as total_jual,SUM(hargajual) as total_pendapatan  from view_detailjual where (nama_kategori ILIKE '%" +
         cari +
         "%') " +
         sqlFilterTanggal +
-        " group by idkategori,tanggal_jual,nama_kategori,jumlahjual,hargajual ";
+        " group by idkategori,nama_kategori";
 
     let result = await koneksi.query(sql, [cari, mulai, sampai]);
     console.log(result);
@@ -133,12 +136,13 @@ router.get("/pelanggan", async function(req, res, next) {
         sampai = sampai + " 23:59";
         sqlFilterTanggal = "and tanggaL_jual between $2 and $3";
     }
+    sqlFilterTanggal = sqlFilterTanggal + " and idtoko = " + req.context.idtoko;
     sql =
-        "select idpelanggan,tanggal_jual,nama_pelanggan,alamat_pelanggan,no_telepon,SUM(jumlahjual) as total_jual , SUM(hargajual) as total_pendapatan , hargajual - hargabeli as total_keuntungan  from view_detailjual where (nama_pelanggan ILIKE '%" +
+        "select idpelanggan,nama_pelanggan,alamat_pelanggan,no_telepon,SUM(jumlahjual) as total_jual , SUM(hargajual) as total_pendapatan   from view_detailjual where (nama_pelanggan ILIKE '%" +
         cari +
         "%') " +
         sqlFilterTanggal +
-        " group by idpelanggan,tanggal_jual,nama_pelanggan,alamat_pelanggan,no_telepon,jumlahjual,hargabeli,hargajual";
+        " group by idpelanggan,nama_pelanggan,alamat_pelanggan,no_telepon";
 
     let result = await koneksi.query(sql, [cari, mulai, sampai]);
     console.log(result);
@@ -162,12 +166,14 @@ router.get("/pegawai", async function(req, res, next) {
         sampai = sampai + " 23:59";
         sqlFilterTanggal = "and tanggaL_jual between $2 and $3";
     }
+
+    sqlFilterTanggal = sqlFilterTanggal + " and idtoko = " + req.context.idtoko;
     sql =
-        "select idpegawai,tanggal_jual,nama_pegawai,alamat_pegawai,no_pegawai,SUM(jumlahjual) as total_jual , SUM(hargajual) as total_pendapatan , hargajual - hargabeli as total_keuntungan  from view_detailjual where (nama_pegawai ILIKE '%" +
+        "select idpegawai,nama_pegawai,alamat_pegawai,no_pegawai,SUM(jumlahjual) as total_jual , SUM(hargajual) as total_pendapatan  from view_detailjual where (nama_pegawai ILIKE '%" +
         cari +
         "%')" +
         sqlFilterTanggal +
-        "  group by idpegawai,tanggal_jual,nama_pegawai,alamat_pegawai,no_pegawai,jumlahjual,hargabeli,hargajual";
+        "  group by idpegawai,nama_pegawai,alamat_pegawai,no_pegawai";
     let result = await koneksi.query(sql, [cari, mulai, sampai]);
     console.log(result);
     if (result.length > 0) {
