@@ -2,7 +2,7 @@ var express = require("express");
 var koneksi = require("../Util/Database");
 const router = require("express").Router();
 
-router.get("identitas", async function(req, res) {
+router.get("/identitas", async function(req, res) {
     let sql = "select * from tbltoko where idtoko=$1";
     let data = await koneksi.oneOrNone(sql, [req.context.idtoko]);
     res.status(200).json({
