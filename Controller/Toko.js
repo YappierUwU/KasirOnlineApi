@@ -14,16 +14,25 @@ router.get("/identitas", async function(req, res) {
 // update identitas nama, alamat, lokasi, jenis usaha
 router.post("/identitas", async function(req, res) {
     let sql =
-        "update tbltoko set nama_toko=$1, alamat_toko=$2, jenis_toko=$3 where idtoko=$4";
+        "update tbltoko set nama_toko=$1, alamat_toko=$2, jenis_toko=$3, nama_pemilik=$4 where idtoko=$5";
     let data = await koneksi.none(sql, [
         req.body.nama_toko,
         req.body.alamat_toko,
         req.body.jenis_toko,
+        req.body.nama_pemilik,
         req.context.idtoko,
     ]);
-    res.status(200).json({
-        status: true,
-        data: data,
-    });
+
+    if (data) {
+        res.status(200).json({
+            status: true,
+            message: "Data berhasil diubah",
+        });
+    } else {
+        res.status(500).json({
+            status: false,
+            message: "Data gagal diubah",
+        });
+    }
 });
 module.exports = router;
