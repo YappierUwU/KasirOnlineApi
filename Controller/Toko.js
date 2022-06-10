@@ -14,11 +14,10 @@ router.get("/identitas", async function(req, res) {
 // update identitas nama, alamat, lokasi, jenis usaha
 router.post("/identitas", async function(req, res) {
     let sql =
-        "update tbltoko set nama_toko=$1, alamat_toko=$2, lokasi_toko=$3, jenis_toko=$4 where idtoko=$5";
+        "update tbltoko set nama_toko=$1, alamat_toko=$2, jenis_toko=$3 where idtoko=$4";
     let data = await koneksi.none(sql, [
         req.body.nama_toko,
         req.body.alamat_toko,
-        req.body.lokasi_toko,
         req.body.jenis_toko,
         req.context.idtoko,
     ]);
