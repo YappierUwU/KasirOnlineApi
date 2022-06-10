@@ -15,24 +15,25 @@ router.get("/identitas", async function(req, res) {
 router.post("/identitas", async function(req, res) {
     let sql =
         "update tbltoko set nama_toko=$1, alamat_toko=$2, jenis_toko=$3, nama_pemilik=$4 where idtoko=$5";
-    let data = await koneksi.none(sql, [
-        req.body.nama_toko,
-        req.body.alamat_toko,
-        req.body.jenis_toko,
-        req.body.nama_pemilik,
-        req.context.idtoko,
-    ]);
-
-    if (data) {
-        res.status(200).json({
-            status: true,
-            message: "Data berhasil diubah",
+    koneksi
+        .none(sql, [
+            req.body.nama_toko,
+            req.body.alamat_toko,
+            req.body.jenis_toko,
+            req.body.nama_pemilik,
+            req.context.idtoko,
+        ])
+        .then(() => {
+            res.status(200).json({
+                status: true,
+                message: "Data berhasil diubah",
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                status: false,
+                message: "Data gagal diubah" + err,
+            });
         });
-    } else {
-        res.status(500).json({
-            status: false,
-            message: "Data gagal diubah",
-        });
-    }
 });
 module.exports = router;
