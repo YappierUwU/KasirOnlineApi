@@ -14,7 +14,7 @@ const Toko = require("../Controller/Toko");
 
 function Route(app) {
     app.use("/auth", Auth);
-    app.use("/identitas", Toko);
+    app.use("/toko", Toko);
     app.use("/register", Register);
     app.use("/satuan", Satuan);
     app.use("/pelanggan", Pelanggan);
