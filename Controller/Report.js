@@ -45,7 +45,7 @@ router.get("/pendapatan", async function(req, res, next) {
     }
     sqlFilterTanggal = sqlFilterTanggal + " and idtoko = " + req.context.idtoko;
     sql =
-        "select fakturjual,nama_pelanggan,nama_pegawai,tanggal_jual,total,bayar,kembali,potongan from view_jual where (nama_pelanggan ILIKE '%" +
+        "select idjual,fakturjual,nama_pelanggan,nama_pegawai,tanggal_jual,total,bayar,kembali,potongan from view_jual where (nama_pelanggan ILIKE '%" +
         cari +
         "%' or fakturjual ILIKE '%" +
         cari +
