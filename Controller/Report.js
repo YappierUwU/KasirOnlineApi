@@ -9,7 +9,8 @@ router.get("/laba", async function(req, res, next) {
     let sqlFilterTanggal = "";
     if (mulai != "" && sampai != "") {
         sampai = sampai + " 23:59";
-        sqlFilterTanggal = "and tanggal_jual between $2 and $3";
+        sqlFilterTanggal =
+            "and tanggal_jual between $2 and $3 order by tanggal_jual desc";
     }
     sqlFilterTanggal = sqlFilterTanggal + " and idtoko = " + req.context.idtoko;
     sql =
@@ -41,7 +42,8 @@ router.get("/pendapatan", async function(req, res, next) {
     let sqlFilterTanggal = "";
     if (mulai != "" && sampai != "") {
         sampai = sampai + " 23:59";
-        sqlFilterTanggal = "and tanggal_jual between $2 and $3";
+        sqlFilterTanggal =
+            "and tanggal_jual between $2 and $3 order by tanggal_jual desc";
     }
     sqlFilterTanggal = sqlFilterTanggal + " and idtoko = " + req.context.idtoko;
     sql =
