@@ -72,7 +72,7 @@ router.post(
 router.post("/verifikasi", async function(req, res, next) {
     let sql = `select * from tblotp where otp = $1 and idtoko=$2`;
     koneksi
-        .any(sql, [(req.body.otp, req.context.idtoko)])
+        .any(sql, [req.body.otp, req.context.idtoko])
         .then((data) => {
             if (data.length == 0) {
                 res.status(400).json({
