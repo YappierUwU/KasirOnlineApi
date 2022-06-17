@@ -12,7 +12,8 @@ const resultValidation = validationResult.withDefaults({
 function handlerInput(req, res, next) {
     let error = resultValidation(req);
     if (!error.isEmpty()) {
-        res.status(406).json({ status: false, error: error.array() });
+        const message = error[0].message;
+        res.status(406).json({ status: false, message });
     } else {
         next();
     }
