@@ -39,7 +39,7 @@ router.post(
         const created_at = new Date();
         let isi = [req.context.idtoko, token, created_at, 0];
         if (waktu) {
-            res.status(304).json({
+            res.status(400).json({
                 status: false,
                 message: "Verifikasi gagal telah dilakukan harap tunggu 5 menit lagi",
             });

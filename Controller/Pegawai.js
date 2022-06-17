@@ -44,7 +44,7 @@ router.get("/:id", async function(req, res, next) {
             data: result,
         });
     } else {
-        res.status(304).json({
+        res.status(400).json({
             status: false,
             data: {},
             message: "Data tidak ditemukan",
@@ -71,7 +71,7 @@ router.post("/", validate(), handlerInput, function(req, res, next) {
             });
         })
         .catch((err) => {
-            res.status(304).json({
+            res.status(400).json({
                 status: false,
                 data: {},
                 message: err.message,
@@ -93,7 +93,7 @@ router.delete("/:id", async function(req, res, next) {
             });
         })
         .catch((err) => {
-            res.status(304).json({
+            res.status(400).json({
                 status: false,
                 data: {},
                 message: err.message,
@@ -138,7 +138,7 @@ router.post("/:id", validate(), handlerInput, function(req, res) {
             });
         })
         .catch((e) => {
-            res.status(304).json({
+            res.status(400).json({
                 status: false,
                 data: {},
                 message: e.message,
