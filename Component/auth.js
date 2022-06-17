@@ -1,42 +1,41 @@
 const router = require("express").Router();
 const fs = require("fs");
 
-router.get("/checkauth", async (req, res) => {
-  client
-    .getState()
-    .then((data) => {
-      console.log(data);
-      res.send(data);
-    })
-    .catch((err) => {
-      if (err) {
-        res.send("DISCONNECTED");
-      }
-    });
+router.get("/checkauth", async(req, res) => {
+    client
+        .getState()
+        .then((data) => {
+            res.send(data);
+        })
+        .catch((err) => {
+            if (err) {
+                res.send("DISCONNECTED");
+            }
+        });
 });
 
-router.get("/getqr", async (req, res) => {
-  client
-    .getState()
-    .then((data) => {
-      if (data) {
-        res.write("<html><body><h2>Already Authenticated</h2></body></html>");
-        res.end();
-      } else sendQr(res);
-    })
-    .catch(() => sendQr(res));
+router.get("/getqr", async(req, res) => {
+    client
+        .getState()
+        .then((data) => {
+            if (data) {
+                res.write("<html><body><h2>Already Authenticated</h2></body></html>");
+                res.end();
+            } else sendQr(res);
+        })
+        .catch(() => sendQr(res));
 });
 
-router.post("/logout_wa", async (req, res) => {
-  // Logout whatssap
-  client.logout();
-  res.json({ status: "success" });
+router.post("/logout_wa", async(req, res) => {
+    // Logout whatssap
+    client.logout();
+    res.json({ status: "success" });
 });
 
 function sendQr(res) {
-  fs.readFile("Component/last.qr", (err, last_qr) => {
-    if (!err && last_qr) {
-      var page = `
+    fs.readFile("Component/last.qr", (err, last_qr) => {
+        if (!err && last_qr) {
+            var page = `
                     <html>
                         <body>
                             <script type="module">
@@ -57,10 +56,10 @@ function sendQr(res) {
                         </body>
                     </html>
                 `;
-      res.write(page);
-      res.end();
-    }
-  });
+            res.write(page);
+            res.end();
+        }
+    });
 }
 
 module.exports = router;

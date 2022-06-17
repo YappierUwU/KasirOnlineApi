@@ -18,8 +18,7 @@ function generateToken() {
     let digit4 = Math.floor(Math.random() * 9).toString();
     return digit1 + digit2 + digit3 + digit4;
 }
-// twlp
-// nama pemilik nama usaha lokasui usaha jenis usaha
+
 router.post(
     "/minta",
     numbervalidate(),
@@ -42,7 +41,7 @@ router.post(
         if (waktu) {
             res.status(304).json({
                 status: false,
-                message: "Verifikasi gagal",
+                message: "Verifikasi gagal telah dilakukan harap tunggu 5 menit lagi",
             });
             return;
         }
@@ -54,7 +53,6 @@ router.post(
         client
             .sendMessage(req.body.nomer_toko + "@c.us", message)
             .then((response) => {
-                console.log(response);
                 return res.status(200).json({
                     status: true,
                     token: token,
@@ -64,6 +62,7 @@ router.post(
                 console.error(e);
                 res.status(400).json({
                     status: false,
+                    message: "Terjadi Kesalahan harap coba lagi",
                 });
             });
     }
@@ -90,7 +89,10 @@ router.post("/verifikasi", async function(req, res, next) {
             }
         })
         .catch((err) => {
-            console.log(err);
+            res.status(400).json({
+                status: false,
+                message: "Terjadi Kesalahan harap coba lagi",
+            });
         });
 });
 
@@ -112,7 +114,7 @@ router.post(
             koneksi.none(sqlpegawai, [req.context.idtoko, "1234"]);
         });
         res.json({
-            message: "data berhasil diubah",
+            message: "Data berhasil diubah",
         });
         //
     }
@@ -153,13 +155,11 @@ router.post("/barang", handlerInput, async function(req, res, next) {
             data: req.body,
         });
     } catch (error) {
-        res.status(501).json({
+        res.status(400).json({
             status: false,
             message: error,
         });
     }
-
-    //
 });
 
 module.exports = router;

@@ -22,7 +22,7 @@ router.get("/laba", async function(req, res, next) {
         sqlFilterTanggal;
 
     let result = await koneksi.query(sql, [cari, mulai, sampai]);
-    console.log(result);
+
     if (result.length > 0) {
         res.status(200).json({
             status: true,
@@ -54,7 +54,7 @@ router.get("/pendapatan", async function(req, res, next) {
         "%') " +
         sqlFilterTanggal;
     let result = await koneksi.query(sql, [cari, mulai, sampai]);
-    console.log(result);
+
     if (result.length > 0) {
         res.status(200).json({
             status: true,
@@ -87,7 +87,7 @@ router.get("/barang", async function(req, res, next) {
         " group by idbarang,barang,nama_satuan,nama_kategori ";
 
     let result = await koneksi.query(sql, [cari, mulai, sampai]);
-    console.log(result);
+
     if (result.length > 0) {
         res.status(200).json({
             status: true,
@@ -117,7 +117,7 @@ router.get("/kategori", async function(req, res, next) {
         " group by idkategori,nama_kategori";
 
     let result = await koneksi.query(sql, [cari, mulai, sampai]);
-    console.log(result);
+
     if (result.length > 0) {
         res.status(200).json({
             status: true,
@@ -147,7 +147,7 @@ router.get("/pelanggan", async function(req, res, next) {
         " group by idpelanggan,nama_pelanggan,alamat_pelanggan,no_telepon";
 
     let result = await koneksi.query(sql, [cari, mulai, sampai]);
-    console.log(result);
+
     if (result.length > 0) {
         res.status(200).json({
             status: true,
@@ -177,7 +177,7 @@ router.get("/pegawai", async function(req, res, next) {
         sqlFilterTanggal +
         "  group by idpegawai,nama_pegawai,alamat_pegawai,no_pegawai";
     let result = await koneksi.query(sql, [cari, mulai, sampai]);
-    console.log(result);
+
     if (result.length > 0) {
         res.status(200).json({
             status: true,
