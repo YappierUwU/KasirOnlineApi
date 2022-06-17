@@ -9,10 +9,13 @@ router.get("/laba", async function(req, res, next) {
     let sqlFilterTanggal = "";
     if (mulai != "" && sampai != "") {
         sampai = sampai + " 23:59";
-        sqlFilterTanggal =
-            "and tanggal_jual between $2 and $3 order by tanggal_jual desc";
+        sqlFilterTanggal = "and tanggal_jual between $2 and $3 ";
     }
-    sqlFilterTanggal = sqlFilterTanggal + " and idtoko = " + req.context.idtoko;
+    sqlFilterTanggal =
+        sqlFilterTanggal +
+        " and idtoko = " +
+        req.context.idtoko +
+        " order by tanggal_jual desc";
     sql =
         "select fakturjual,nama_pelanggan,nama_pegawai,tanggal_jual,barang,jumlahjual,nama_satuan,hargabeli,hargajual,idtoko,hargajual-hargabeli as laba from view_detailjual where (nama_pelanggan ILIKE '%" +
         cari +
@@ -42,10 +45,13 @@ router.get("/pendapatan", async function(req, res, next) {
     let sqlFilterTanggal = "";
     if (mulai != "" && sampai != "") {
         sampai = sampai + " 23:59";
-        sqlFilterTanggal =
-            "and tanggal_jual between $2 and $3 order by tanggal_jual desc";
+        sqlFilterTanggal = "and tanggal_jual between $2 and $3";
     }
-    sqlFilterTanggal = sqlFilterTanggal + " and idtoko = " + req.context.idtoko;
+    sqlFilterTanggal =
+        sqlFilterTanggal +
+        " and idtoko = " +
+        req.context.idtoko +
+        " order by tanggal_jual desc";
     sql =
         "select idjual,fakturjual,nama_pelanggan,nama_pegawai,tanggal_jual,total,bayar,kembali,potongan from view_jual where (nama_pelanggan ILIKE '%" +
         cari +
