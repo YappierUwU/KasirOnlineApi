@@ -10,6 +10,7 @@ const { encrypt } = require("../Util/Encrypt");
 const validate = require("../Validation/ProfileValidation");
 const numbervalidate = require("../Validation/OtpValidation");
 const handlerInput = require("../Util/ValidationHandler");
+const { addRow, updateRow } = require("../Util/Sheet");
 
 function generateToken() {
     let digit1 = Math.floor(Math.random() * 9).toString();
@@ -24,8 +25,12 @@ router.post(
     numbervalidate(),
     handlerInput,
     async function(req, res) {
-        let sql = "update tbltoko set nomer_toko=$1  where idtoko=$2";
-        koneksi.none(sql, [req.body.nomer_toko, req.context.idtoko]);
+        let sql =
+            "update tbltoko set nomer_toko=$1  where idtoko=$2 returning email_toko";
+        let email = await koneksi.oneOrNone(sql, [
+            req.body.nomer_toko,
+            req.context.idtoko,
+        ]);
         let otp =
             "insert into tblotp (idtoko,otp,created_at,status) values ($1,$2,$3,$4)";
         let timer =
@@ -52,14 +57,21 @@ router.post(
 
         client
             .sendMessage(req.body.nomer_toko + "@c.us", message)
-            .then((response) => {
+            .then(async(response) => {
+                await addRow({
+                    idtoko: req.context.idtoko,
+                    nomer_toko: req.body.nomer_toko,
+                    nama_toko: "",
+                    alamat_toko: "",
+                    nama_pemilik: "",
+                    email_toko: email ? email.email_toko : "",
+                });
                 return res.status(200).json({
                     status: true,
                     token: token,
                 });
             })
             .catch((e) => {
-                console.error(e);
                 res.status(400).json({
                     status: false,
                     message: "Terjadi Kesalahan harap coba lagi",
@@ -110,7 +122,14 @@ router.post(
             req.body.jenis_toko,
             req.context.idtoko,
         ];
-        koneksi.none(sql, data).then(() => {
+        await koneksi.none(sql, data).then(async() => {
+            await updateRow({
+                    nama_toko: req.body.nama_toko,
+                    alamat_toko: req.body.alamat_toko,
+                    nama_pemilik: req.body.nama_pemilik,
+                },
+                req.context.idtoko
+            );
             koneksi.none(sqlpegawai, [req.context.idtoko, "1234"]);
         });
         res.json({
