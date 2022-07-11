@@ -15,7 +15,6 @@ const updateRow = async(body, idtoko) => {
     for (let item of data) {
         if (item["idtoko"] == idtoko) {
             Object.keys(body).forEach((key) => {
-                console.log(key);
                 if (key !== "idtoko") {
                     item[key] = body[key];
                 }

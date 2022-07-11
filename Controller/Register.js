@@ -32,7 +32,7 @@ router.post(
             req.context.idtoko,
         ]);
         let otp =
-            "insert into tblotp (idtoko,otp,created_at,status) values ($1,$2,$3,$4)";
+            "delete from tblotp where idtoko=$1;insert into tblotp (idtoko,otp,created_at,status) values ($1,$2,$3,$4)";
         let timer =
             "set TIMEZONE = 'Asia/Jakarta' ; select created_at , now() - interval '5 minutes' from tblotp where idtoko=$1 and created_at >= now() - interval '5 minutes' order by created_at desc limit 1";
         let waktu = await koneksi.oneOrNone(timer, [
@@ -43,13 +43,13 @@ router.post(
         token = token.toString();
         const created_at = new Date();
         let isi = [req.context.idtoko, token, created_at, 0];
-        if (waktu) {
-            res.status(400).json({
-                status: false,
-                message: "Verifikasi gagal telah dilakukan harap tunggu 5 menit lagi",
-            });
-            return;
-        }
+        // if (waktu) {
+        //     res.status(400).json({
+        //         status: false,
+        //         message: "Verifikasi gagal telah dilakukan harap tunggu 5 menit lagi",
+        //     });
+        //     return;
+        // }
         koneksi.none(otp, isi, timer, [req.body.created_at]);
         let message =
             "TERIMA KASIH TELAH MENDAFTAR DI APLIKASI KAMI , JANGAN BERIKAN KODE INI PADA SIAPAPUN " +
@@ -72,6 +72,7 @@ router.post(
                 });
             })
             .catch((e) => {
+                console.log(e);
                 res.status(400).json({
                     status: false,
                     message: "Terjadi Kesalahan harap coba lagi",
