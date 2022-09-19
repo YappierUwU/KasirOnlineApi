@@ -1,5 +1,5 @@
 {
-    "name": "projectdoctor",
+    "name": "apiitbposmobile",
     "author": {
         "name": "Novandi Kevin Pratama",
         "email": "20081010005@student.upnjatim.ac.id"
@@ -14,7 +14,9 @@
         "cors": "^2.8.5",
         "crypto": "^1.0.1",
         "dotenv": "^16.0.0",
+        "ejs": "^3.1.8",
         "express": "^4.17.3",
+        "express-session": "^1.17.3",
         "express-validator": "^6.12.0",
         "fs": "0.0.1-security",
         "google-spreadsheet": "^3.3.0",

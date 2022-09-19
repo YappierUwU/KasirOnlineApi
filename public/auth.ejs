@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zxx" class="js">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="../assets/images/favicon.ico">
+    <title>Login | Admin ITBPos Mobile Online</title>
+    <link rel="stylesheet" href="../assets/css/dashlite.min.css?ver=2.4.0">
+    <link id="skin-default" rel="stylesheet" href="../assets/css/theme.css?ver=2.4.0">
+</head>
+<body class="nk-body bg-white npc-default pg-auth">
+    <div class="nk-app-root">
+        <div class="nk-main">
+            <div class="nk-wrap nk-wrap-nosidebar">
+                <!-- content @s -->
+                <div class="nk-content">
+                    <div class="nk-block nk-block-middle nk-auth-body  wide-xs">
+                        <div class="brand-logo pb-4 text-center">
+                            <a href="html/index.html" class="logo-link">
+                                <img class="logo-light logo-img logo-img-lg" src="../assets/images/logo.png" srcset="../assets/images/logo2x.png 2x" alt="logo">
+                                <img class="logo-dark logo-img logo-img-lg" src="../assets/images/logo.png" srcset="../assets/images/logo2x.png 2x" alt="logo-dark">
+                            </a>
+                        </div>
+                        <div class="card">
+                            <div class="card-inner card-inner-lg">
+                                <div class="nk-block-head">
+                                    <div class="nk-block-head-content">
+                                        <h4 class="nk-block-title">Masuk </h4>
+                                        <div class="nk-block-des">
+                                            <p>Akses admin panel dengan Username dan password</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form id="formLogin">
+                                    <div class="form-group">
+                                        <div class="form-label-group">
+                                            <label class="form-label" for="default-01">Username</label>
+                                        </div>
+                                        <input type="text" class="form-control form-control-lg" name="username" id="default-01" placeholder="Masukkan username">
+                                        <small class="text-danger error-login d-none">Username tidak ditemukan</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-label-group">
+                                            <label class="form-label" for="password">Password</label>
+                                        </div>
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="form-icon form-icon-right passcode-switch" data-target="password">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Masukkan password">
+                                            <small class="text-danger error-login d-none">Password tidak ditemukan</small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-lg btn-primary btn-block">Masuk</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/js/bundle.js?ver=2.4.0"></script>
+    <script src="../assets/js/scripts.js?ver=2.4.0"></script>
+    <script src="../assets/js/auth.js?ver=2.4.0"></script>
+</html>

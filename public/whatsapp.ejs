@@ -1,0 +1,47 @@
+<%- include('template/header',{title:'Scan Barcode Whatsapp'}); %>
+    <div class="nk-block-head nk-block-head-sm">
+        <div class="nk-block-between">
+            <div class="nk-block-head-content">
+                <h3 class="nk-block-title page-title">Scan Barcode</h3>
+            </div>
+        </div>
+        <div class="nk-block mt-3">
+            <div class="card card-stretch">
+                <div class="row py-4 px-2">
+                    <div class="col-lg text-center py-5" id="loader">
+                        <ul class="preview-list justify-content-center my-5 py-5">
+                            <li class="preview-item">
+                                <div class="spinner-grow text-primary" role="status"></div>
+                            </li>
+                            <li class="preview-item">
+                                <div class="spinner-grow text-secondary" role="status"></div>
+                            </li>
+                            <li class="preview-item">
+                                <div class="spinner-grow text-success" role="status"></div>
+                            </li>
+                            <li class="preview-item">
+                                <div class="spinner-grow text-danger" role="status"></div>
+                            </li>
+                            <li class="preview-item">
+                                <div class="spinner-grow text-warning" role="status"></div>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="col-lg text-center d-none" id="qr-scan">
+                        <h5>Login to WhatsApp</h5>
+                        <img class="img-fluid my-2" src="https://cdn.contentfun.net/files/upload/content/322052eb1cab393f4d7e2f37077d78ea.png" alt="" id="qrcode" />
+                        <h4>Scan me</h4>
+                        <p class="text-muted">wait until QR Code show</p>
+                    </div>
+                    <div class="col-lg">
+                        <h5>Logs:</h5>
+                        <ul class="" id="logs"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('template/footer'); %>
+        <script src="/assets/js/socket.io.min.js"></script>
+        <script src="/assets/js/whatsapp.js"></script>

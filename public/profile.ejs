@@ -1,0 +1,82 @@
+<%- include('template/header',{title:'Setting Akun'}); %>
+    <div class="nk-block">
+        <div class="card">
+            <div class="card-aside-wrap">
+                <div class="card-inner card-inner-lg">
+                    <div class="nk-block-head nk-block-head-lg">
+                        <div class="nk-block-between">
+                            <div class="nk-block-head-content">
+                                <h4 class="nk-block-title">Pengaturan Akun</h4>
+
+                            </div>
+                            <div class="nk-block-head-content align-self-start d-lg-none">
+                                <a href="#" class="toggle btn btn-icon btn-trigger mt-n1" data-target="userAside"><em class="icon ni ni-menu-alt-r"></em></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .nk-block-head -->
+                    <div class="nk-block">
+                        <div class="nk-data data-list">
+                            <div class="data-head">
+                                <h6 class="overline-title">Ubah Kata Sandi</h6>
+                            </div>
+                            <form class="form-validate" novalidate="novalidate" id="formChangePass">
+                                <div class="data-item d-block">
+                                    <div class="form-group">
+                                        <div class="form-label-group">
+                                            <label class="form-label"  for="password">Password Lama</label>
+                                        </div>
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="form-icon form-icon-right passcode-switch is-hidden" data-target="password">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input required minlength="8" name="old_password" type="password" class="form-control form-control-lg" id="password" placeholder="Masukkan password Lama">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="data-item d-block">
+                                    <div class="form-group">
+                                        <div class="form-label-group">
+                                            <label class="form-label" for="new_password">Password Baru</label>
+                                        </div>
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="form-icon form-icon-right passcode-switch is-hidden" data-target="new_password">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input required minlength="8" type="password" name="new_password" class="form-control form-control-lg" id="new_password" placeholder="Masukkan password baru">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="data-item d-block">
+                                    <div class="form-group">
+                                        <div class="form-label-group">
+                                            <label class="form-label"   for="confirm_password">Konfirmasi Password</label>
+                                        </div>
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="form-icon form-icon-right passcode-switch is-hidden" data-target="confirm_password">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input required data-rule-equalTo="#new_password"  equalto="#new_password" minlength="8" type="password" name="confirm_password" class="form-control form-control-lg" id="confirm_password" placeholder="Masukkan konfirmasi password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="data-item">
+                                    <button class="btn btn-block btn-primary">Simpan</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                    <!-- .nk-block -->
+                </div>
+                <!-- card-aside -->
+            </div>
+            <!-- .card-aside-wrap -->
+        </div>
+        <!-- .card -->
+    </div>
+    <%- include('template/footer'); %>
+    <script src="/assets/js/account.js"></script>

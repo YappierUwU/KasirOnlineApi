@@ -1,0 +1,63 @@
+<%- include('template/header',{title:'Daftar Pengguna'}); %>
+    <div class="nk-block-head nk-block-head-sm">
+        <div class="nk-block-between">
+            <div class="nk-block-head-content">
+                <h3 class="nk-block-title page-title">Daftar Pengguna</h3>
+            </div>
+        </div>
+    </div>
+    <div class="nk-block">
+        <div class="card card-stretch">
+            <div class="card-inner-group">
+                <div class="card-inner position-relative card-tools-toggle">
+                    <div class="card-title-group">
+                        <div class="card-tools">
+                            <div class="form-inline flex-nowrap gx-3">
+                                <div class="form-wrap w-150px">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-tools mr-n1">
+                            <ul class="btn-toolbar gx-1">
+                                <li>
+                                    <a href="#" class="btn btn-icon search-toggle toggle-search" data-target="search"><em class="icon ni ni-search"></em></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-search search-wrap" data-search="search">
+                        <div class="card-body">
+                            <div class="search-content">
+                                <a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a>
+                                <input type="text" id="search-form" class="form-control border-transparent form-focus-none" placeholder="Cari dengan nama atau email pengguna">
+                                <button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-inner p-0">
+                    <div class="nk-tb-list nk-tb-ulist" id="list_pengguna">
+                        <div class="nk-tb-item nk-tb-head">
+
+                            <div class="nk-tb-col"><span class="sub-text">Nama</span></div>
+                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">No.Telp</span></div>
+                            <div class="nk-tb-col tb-col-md"><span class="sub-text">Dibuat</span></div>
+                            <div class="nk-tb-col">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-inner d-none" id="not-found-data">
+                    <h5 class="text-center text-danger">Data tidak ditemukan</h5>
+
+                </div>
+                <div class="card-inner" id="load-more-btn">
+                    <div class="nk-block-between g-3">
+                        <button class="btn btn-primary" id="more-btn">Muat lagi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('template/footer'); %>
+        <script src="../assets/js/pengguna.js?v=2"></script>

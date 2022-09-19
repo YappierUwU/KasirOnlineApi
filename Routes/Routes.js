@@ -11,6 +11,8 @@ const Report = require("../Controller/Report");
 const chatRoute = require("../Component/chatting");
 const authRoute = require("../Component/auth");
 const Toko = require("../Controller/Toko");
+const Admin = require("../Controller/Admin")
+
 
 function Route(app) {
     app.use("/auth", Auth);
@@ -27,12 +29,7 @@ function Route(app) {
     app.use("/wa/chat", chatRoute);
     app.use("/wa/auth", authRoute);
 
-    // If route not found
-    // app.use(function(req, res, next) {
-    //     if (!req.route)
-    //         return res.status(404).json({ status: false, message: "Not Found" });
-    //     next();
-    // });
+    app.use("/admin", Admin);
 }
 
 module.exports = Route;
