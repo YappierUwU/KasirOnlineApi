@@ -34,11 +34,12 @@ $(document).ready(() => {
                     <div class="user-card">
                         <div class="user-info">
                             <span class="tb-lead">${user.nama_pemilik}</span>
-                            <span>${user.email_toko}</span>
+                            <span class="d-block">${user.email_toko}</span>
+                            <span class="d-block d-lg-none">${user.nomer_toko}</span>
                         </div>
                     </div>
             </div>
-            <div class="nk-tb-col">
+            <div class="nk-tb-col tb-col-lg">
                 <span>${user.nomer_toko}</span>
             </div>
             <div class="nk-tb-col tb-col-lg">
